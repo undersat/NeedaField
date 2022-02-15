@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Eduardo Luis Sirgo</Authors>
+    <Company>UNDERSAT MOBILE COMPUTING IT S.L.</Company>
+    <Copyright>2021 UNDERSAT IT S.L.</Copyright>
+    <Description>DinaData es una utilidad de emergencia que permite crear nuevos campos en las entidades de tu proyecto dotnet de forma inmediata cuando éste ya está en explotación, sin necesidad de modificar el fuente, la base de datos o los formularios.</Description>
+    <PackageTags>Dynamic Fields Generator DotNet</PackageTags>
+    <PackageIconUrl>icon-72x72.png</PackageIconUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Version>1.0.6</Version>
+    <NeutralLanguage>es</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="newtonsoft.json" Version="13.0.1" />
+    <PackageReference Include="system.configuration.configurationmanager" Version="6.0.0" />
+    <None Include="icon-72x72.png" Pack="true" PackagePath="" />
+    <None Include="LICENSE.txt" Pack="true" PackagePath="" />
+    <Content Include="Views\Shared\EditorTemplates\needafield.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\needafield.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md" Pack="true">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

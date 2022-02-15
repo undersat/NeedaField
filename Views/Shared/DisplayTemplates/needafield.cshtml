@@ -1,0 +1,10 @@
+﻿@*NeedaField display template*@
+
+@model NeedaField
+
+@foreach (var kvp in Model.fields)
+{
+    <label> @kvp.Key</label>
+    @kvp.Value.val
+    <br />
+}

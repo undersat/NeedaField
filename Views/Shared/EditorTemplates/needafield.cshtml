@@ -1,0 +1,35 @@
+﻿@*NeedaField editor template. Updated for checkbox type support *@
+
+@model NeedaField
+
+@{ var ind = 0; var keyname = ""; var valuename = "";}
+
+@foreach (var field in Model.fields)
+{
+
+    { keyname = Model.dina_property + ".fields[" + ind.ToString() + "].Key"; }
+    { valuename = Model.dina_property + ".fields[" + ind.ToString() + "].Value.val"; }
+
+    <label> @field.Key</label>
+
+    @if (field.Value.type != "checkbox")
+    {
+        <input type="@field.Value.type" name="@valuename" value="@field.Value.val" placeholder="@field.Key" class="form-control" />
+    }
+    else
+    {
+        var checkval = field.Value.val.ToLower() == "true" ? "True" : "False";
+        var ischecked = checkval == "True" ? "checked" : "";
+
+        <input type="checkbox" name="@valuename" @ischecked value="@checkval" onchange="if (this.checked) this.value = 'True'; else this.value = 'False';" placeholder="@field.Key" class="form-control" />
+        <input type="hidden" name="@valuename" value="False" />
+
+    }
+
+    <input type="hidden" name="@keyname" value="@field.Key" />
+
+    { ind++; }
+
+    <br />
+}
+
