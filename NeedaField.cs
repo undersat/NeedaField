@@ -10,17 +10,17 @@ using Newtonsoft.Json;
 
 public class NeedaField
 {
-    public string dina_property { get; private set; } = "";
-    private string dina_class { get; set; } = "";
+    public string naf_property { get; private set; } = "";
+    private string naf_class { get; set; } = "";
     private string json_definition = "";
 
-    public class Dinafield
+    public class NAField
     {
         public string val { get; set; } = "";
         public string type { get; set; } = "text";
     }
 
-    public Dictionary<string, Dinafield> fields { get; set; }
+    public Dictionary<string, NAField> fields { get; set; }
 
     public NeedaField(string json_current_values = "", string my_json_definition = "")
     {
@@ -31,7 +31,7 @@ public class NeedaField
 
         if (string.IsNullOrEmpty(my_json_definition))
         {
-            string param_name = dina_property + "_" + dina_class;
+            string param_name = naf_property + "_" + naf_class;
             json_definition = System.Configuration.ConfigurationManager.AppSettings[param_name];
             if (string.IsNullOrEmpty(json_definition))
             {
@@ -44,7 +44,7 @@ public class NeedaField
         }
 
 
-        fields = new Dictionary<string, Dinafield>(StringComparer.OrdinalIgnoreCase);
+        fields = new Dictionary<string, NAField>(StringComparer.OrdinalIgnoreCase);
         try
         {
             JsonConvert.PopulateObject(json_definition, fields);
@@ -64,7 +64,7 @@ public class NeedaField
                 {
                     if (!fields.ContainsKey(curval.Key))
                     {
-                        fields.Add(curval.Key, new Dinafield() { val = curval.Value });
+                        fields.Add(curval.Key, new NAField() { val = curval.Value });
                     }
                     else
                     {
@@ -93,13 +93,13 @@ public class NeedaField
 
     public string where(object key, object value)
     {
-        string template = dina_property + " like '%\"{0}\":\"{1}\"%'";
+        string template = naf_property + " like '%\"{0}\":\"{1}\"%'";
         return string.Format(template, key, value);
     }
 
     public string getfield(string key)
     {
-        Dinafield _df = null;
+        NAField _df = null;
         if (fields.TryGetValue(key, out _df))
             return _df.val;
         return "";
@@ -109,7 +109,7 @@ public class NeedaField
     {
         if (!fields.ContainsKey(key))
         {
-            fields.Add(key, new Dinafield() { val = value });
+            fields.Add(key, new NAField() { val = value });
             return 1;
         }
         else
@@ -126,8 +126,8 @@ public class NeedaField
             var method = caller.GetMethod();
             if (method.Name.StartsWith("get_") || method.Name.StartsWith("set_"))
             {
-                dina_property = method.Name.Substring(4);
-                dina_class = method.DeclaringType.Name;
+                naf_property = method.Name.Substring(4);
+                naf_class = method.DeclaringType.Name;
                 return true;
             }
         }

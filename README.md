@@ -13,7 +13,7 @@ NeedaField reutiliza un campo string de tu entidad y almacena sobre él múltipl
 
 
         [NotMapped]
-        public NeedaField dinaetc // new property
+        public NeedaField NAFetc // new property
         {
             get { return new NeedaField(etc); }
             set { etc = value.ToString(); }
@@ -57,7 +57,7 @@ NeedaField necesita el paquete **Newtonsoft.Json** y la libreria **Configuration
         
         
         [NotMapped]
-        public NeedaField dinaetc // new property
+        public NeedaField NAFetc // new property
         {
             get { return new NeedaField(etc); }
             set { etc = value.ToString(); }
@@ -69,23 +69,23 @@ NeedaField necesita el paquete **Newtonsoft.Json** y la libreria **Configuration
 4. Sustituir en tus formularios **Create, Edit, Details** el campo extra por el campo NeedaField
 ```
 	 - @Html.EditorFor(x => x.etc)      
-	 + @Html.EditorFor(x => x.dinaetc) 
+	 + @Html.EditorFor(x => x.NAFetc) 
 	 
 	 - @Html.DisplayFor(x => x.etc)      
-	 + @Html.DisplayFor(x => x.dinaetc) 
+	 + @Html.DisplayFor(x => x.NAFetc) 
 ```
 5. definir un parámetros en tu appSettings y añadirle nuevos campos
 ```
-    <add key="dinaetc_Teams" value="{}"/>
+    <add key="NAFetc_Teams" value="{}"/>
 ```
 
 Y eso es todo. Te piden un nuevo campo ? Lo añades en tu app.config o web.config
 
-    <add key="dinaetc_Teams" value="{'Stadium' : {}}"/>
+    <add key="NAFetc_Teams" value="{'Stadium' : {}}"/>
 	
 Si no es de tipo texto, necesitarás definir su tipo según la sintaxis html para campos input
 ```
-	<add key="dinaetc_Teams" value="{'Stadium' : {}, 'Founded in' : {'type' : 'date'}, 'Cups' : {'type' : 'number'}}"/>
+	<add key="NAFetc_Teams" value="{'Stadium' : {}, 'Founded in' : {'type' : 'date'}, 'Cups' : {'type' : 'number'}}"/>
 ```
 
 
