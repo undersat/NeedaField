@@ -1,12 +1,12 @@
 # NeedaField
 
-NeedaField es una utilidad de emergencia que permite crear nuevos campos en la entidades de tu proyecto dotnet de forma inmediata cuando éste ya está en explotación, sin necesidad de modificar el fuente, la base de datos o los formularios. 
+NeedaField is a utility that allows you to create on the fly new fields in the entities of your dotnet project even when it is in production, with no need to modify the source, database or the forms.
 
 
-## COMO FUNCIONA
+## HOW DOES IT WORK
 
 
-NeedaField reutiliza un campo string de tu entidad y almacena sobre él múltiples campos dinámicamente en formato Json. Estos nuevos campos se definen en tu web o app.config en un parámetro de tu appSettings. En la prácica, NeedaField funciona como un nuevo tipo de dato.
+NeedaField recycles an entity string field and stores multiple fields over it dynamically in Json format. These new fields are defined in your web or app.config in a parameter of your appSettings. In practice, NeedaField works as a new data type.
 
 ```cs
         public string etc { get; set; } // your extra field
@@ -19,43 +19,47 @@ NeedaField reutiliza un campo string de tu entidad y almacena sobre él múltipl
             set { etc = value.ToString(); }
         }
 ```
+You should guarantee enough space in database field 
+
+```
+	etc NVARCHAR(MAX)
+```
+
+## WHAT IS NeddaField FOR
+
+In how many of your projects have you found that, once exhaustively analysed, developed, published and already in operation, new requirements arise that force you to create new fields urgently?
+
+With NeedaField you can add new fields to the entities of your project on the fly. You don't need to touch the code of your program, nor modify the structure of your databases, nor even modify the forms, nor publish a new version.
+
+Just define the new data in your appSettings section of to web.config or app.config
+
+It is developed in .net for .net projects.
+
+NeedaField uses the package **Newtonsoft.Json** and the library **ConfigurationManager**
 
 
-## PARA QUE SIRVE
+## WHAT DO TOU NEED
 
-En cuantos de tus proyectos te has encontrado con que, una vez analizado exhaustivamente, desarrollado, publicado y ya en explotación, salen nuevos requisitos que te obligan a crear nuevos campos urgentemente ?
-
-Con NeedaField puedes añadir nuevos campos a las entidades de tu proyecto en caliente. No necesitas tocar el código de tu programa, ni modificar la estructura de tus base de datos, ni siquiera modificar los formularios, ni publicar una nueva versión. 
-
-Basta con definir el nuevo dato en la sección tu appSettings de to web.config o app.config
-
-Está desarrollado en .net para proyectos .net. 
-
-NeedaField necesita el paquete **Newtonsoft.Json** y la libreria **ConfigurationManager**
+- the NeedaField nuget package
+- a dotnet project
+- an extra varchar(MAX) field in each of your tables (example: etc VARCHAR(MAX))
+- the newtonsoft.json package, if you don't already have it.
+- the ConfigurationManager library
+- Razor forms for Create Edit and get Details of your entity.
 
 
-## QUE NECESITAS
+## IMPLEMENTATION STEPS
 
-- un proyecto dotnet
-- un campo extra varchar(MAX) en cada una de tus tablas (ejemplo: etc VARCHAR(MAX))
-- el paquete newtonsoft.json, si aún no lo tienes.
-- la libreria ConfigurationManager
-- formularios Razor para Create Edit y Details
-
-
-## PASOS PARA IMPLEMENTAR NeedaField
-
-1. Instalar NeedaField de nuget
+1. Install NeedaField from nuget
 ```
  > install-package NeedaField
 ```
 
-2. Extender tu campo extra en la clase que mapea tu tabla de esta forma
+2. Extend your extra field in the class that maps your table in this way :
 
 ```cs
         public string etc { get; set; } // your extra field
-        
-        
+
         [NotMapped]
         public NeedaField NAFetc // new property
         {
@@ -64,9 +68,8 @@ NeedaField necesita el paquete **Newtonsoft.Json** y la libreria **Configuration
         }
 ```
 
-3. Incorporar las nuevas plantillas Razor para NeedaField.cshtml en las carpetas de Views/Shared EditorTemplates y DisplayTemplates
+3. Replace in your **Create, Edit, Details** forms the extra field by the NeedaField field
 
-4. Sustituir en tus formularios **Create, Edit, Details** el campo extra por el campo NeedaField
 ```
 	 - @Html.EditorFor(x => x.etc)      
 	 + @Html.EditorFor(x => x.NAFetc) 
@@ -74,27 +77,30 @@ NeedaField necesita el paquete **Newtonsoft.Json** y la libreria **Configuration
 	 - @Html.DisplayFor(x => x.etc)      
 	 + @Html.DisplayFor(x => x.NAFetc) 
 ```
-5. definir un parámetros en tu appSettings y añadirle nuevos campos
+4. define a new parameter in your appSettings prefixed NAF
+
 ```
     <add key="NAFetc_Teams" value="{}"/>
 ```
 
-Y eso es todo. Te piden un nuevo campo ? Lo añades en tu app.config o web.config
+5. ... and use it to append new fields as needed. Thats all! 
 
     <add key="NAFetc_Teams" value="{'Stadium' : {}}"/>
 	
-Si no es de tipo texto, necesitarás definir su tipo según la sintaxis html para campos input
+If it is not a text field (is a number, date, checkbox, etc), you will need to define its type according to the html syntax for input fields
 ```
 	<add key="NAFetc_Teams" value="{'Stadium' : {}, 'Founded in' : {'type' : 'date'}, 'Cups' : {'type' : 'number'}}"/>
 ```
+Magically, the field will appear in your forms. You will be able to edit it and its value will be saved in the database just like the other fields.
 
+You can optionally customize the new Razor templates for NeedaField.cshtml in the Views/Shared EditorTemplates and DisplayTemplates folders. Note that if you reinstall the package you will lose your changes.
 
 ## DOCUMENTACION
 
-[Documentación aquí](https://undersat.com/blog/NeedaField)
+[Documentation here](https://undersat.com/blog/NeedaField)
 
 ## LIVE DEMO
-[Demo interactiva aquí](https://soccer-NeedaField-sample-by-undersat.azurewebsites.net)
+[Interactive demo here](https://soccer-NeedaField-sample-by-undersat.azurewebsites.net)
 							
 ## LICENCIA 
 
